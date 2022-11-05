@@ -2,15 +2,25 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 #Definiere variebeln
+AktuelleFormeln = 0
+MaximumFormeln=9
+FarbenListe=["Black", "Blue", "Orange", "Green", "Red", "Purple", "Yellow", "Pink", "Brown"]
 BreiteCanvas=900
-HoeheCanvas=590
+HoeheCanvas=590  
 BreiteFenster=1000
 HoeheFenster=600
 #Funktion Knopf/Eingabe
 def Knopfdruck():
-    Formel2 = eingabe.get()
-    FunktionFrame(OptionFrame, Funktion(Formel2, farbe="Blue"))
-
+    AktuelleFormeln =+0
+    if  AktuelleFormeln <MaximumFormeln:
+        Formel2 = eingabe.get()
+        #Hier die funktion
+        FarbenListe.insert(len(FarbenListe),FarbenListe.pop(0))
+        AktuellFarbe= FarbenListe[0]
+        FunktionFrame(OptionFrame, Funktion(Formel2, farbe=AktuellFarbe))
+        AktuelleFormeln =+1
+    else:
+        messagebox.showerror(title="Fehler", message="Zu viele funktionen erstellt")
 class Funktion:
     def __init__(self, term, farbe="black"):
         self.farbe = farbe
@@ -34,9 +44,11 @@ class FunktionFrame:
 
        
     def delete(self):
+        AktuelleFormeln=+0
         if messagebox.askokcancel("Löschen", "Wirklich Löschen?"):
             self.FunktionKasten.pack_forget()
             self.FunktionKasten.destroy()
+            AktuelleFormeln=AktuelleFormeln -1
     def AendereFunktion(self):
         self.AendereFenster= Tk() 
         self.Eingabe2 = Entry(self.AendereFenster)
@@ -47,11 +59,12 @@ class FunktionFrame:
     def destroy(self):
         self.Aenderung=self.Eingabe2.get()
         str(self.Aenderung)
+        #Hier funktion einfügen
         self.Formel.config(text=self.Aenderung)
         self.AendereFenster.destroy()
 #Initialisiere fenster/canvas/Knopf
 Fenster = Tk()
-Fenster.title("Mathebuchvisualisierer")
+Fenster.title("Formelvisualisierer")
 Fenster.config(width=HoeheFenster, height=BreiteFenster)
 
 #Frames
@@ -67,7 +80,7 @@ EingabeFrame.pack(side=BOTTOM, fill=X, expand=False)
 Fenster.update()
 
 Grafik = Canvas(CanvasFrame, width=CanvasFrame.winfo_width(), height=CanvasFrame.winfo_height())
-
+AktuelleFormeln=0
 Knopf = Button(EingabeFrame, text="Zeichne!", command=Knopfdruck)
 eingabe = Entry(EingabeFrame, font=("Arial",16))
 eingabe.pack(side=LEFT, fill=X, expand=True)
