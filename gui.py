@@ -19,7 +19,7 @@ def Knopfdruck():
         AktuellFarbe= FarbenListe[0]
         FarbenListe.insert(len(FarbenListe),FarbenListe.pop(0))
         F=Funktion(Formel2, farbe=AktuellFarbe)
-        ZB.drawFunction(f=F, colour=AktuellFarbe, start=eingabeStart.get(), step=eingabeStep.get(), end=eingabeStop.get())
+        ZB.drawFunction(F.eval, colour=AktuellFarbe, start=float(eingabeStart.get()), step=float(eingabeStep.get()), end=float(eingabeStop.get()))
       
         FunktionFrame(OptionFrame, F)
         AktuelleFormeln =+1
@@ -99,6 +99,8 @@ ZB=Zeichenbrett(Grafik)
 ZB.reset()
 ZB.karo()
 ZB.coordinatesystem()
+
+
 
 #Aktualisiere fenster
 Fenster.mainloop()
