@@ -1,7 +1,9 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
+from Draw import *
 #Definiere variebeln
+
 AktuelleFormeln = 0
 MaximumFormeln=9
 FarbenListe=["Black", "Blue", "Orange", "Green", "Red", "Purple", "Yellow", "Pink", "Brown"]
@@ -14,19 +16,16 @@ def Knopfdruck():
     AktuelleFormeln =+0
     if  AktuelleFormeln <MaximumFormeln:
         Formel2 = eingabe.get()
-        #Hier die funktion
-        FarbenListe.insert(len(FarbenListe),FarbenListe.pop(0))
         AktuellFarbe= FarbenListe[0]
-        FunktionFrame(OptionFrame, Funktion(Formel2, farbe=AktuellFarbe))
+        FarbenListe.insert(len(FarbenListe),FarbenListe.pop(0))
+        F=Funktion(Formel2, farbe=AktuellFarbe)
+        ZB.drawFunction(f=F, colour=AktuellFarbe, start=eingabeStart.get(), step=eingabeStep.get(), end=eingabeStop.get())
+      
+        FunktionFrame(OptionFrame, F)
         AktuelleFormeln =+1
     else:
         messagebox.showerror(title="Fehler", message="Zu viele funktionen erstellt")
-class Funktion:
-    def __init__(self, term, farbe="black"):
-        self.farbe = farbe
-        self.term=term
-    def eval (self, x):
-        return eval(self.term, locals={"x":x})
+
 
 class FunktionFrame:
     def __init__(self, parent, Funktion, farbe="Green"):
@@ -83,11 +82,23 @@ Grafik = Canvas(CanvasFrame, width=CanvasFrame.winfo_width(), height=CanvasFrame
 AktuelleFormeln=0
 Knopf = Button(EingabeFrame, text="Zeichne!", command=Knopfdruck)
 eingabe = Entry(EingabeFrame, font=("Arial",16))
+eingabeStart = Entry(EingabeFrame, font=("Arial",16))
+eingabeStop = Entry(EingabeFrame, font=("Arial",16))
+eingabeStep = Entry(EingabeFrame, font=("Arial",16))
+eingabe.insert(0, "Formel")
+eingabeStart.insert(0, "Startwert")
+eingabeStop.insert(0, "Endwert")
+eingabeStep.insert(0, "Schrittweite")
 eingabe.pack(side=LEFT, fill=X, expand=True)
+eingabeStart.pack(side=LEFT,  expand=False)
+eingabeStop.pack(side=LEFT,  expand=False)
+eingabeStep.pack(side=LEFT,  expand=False)
 Knopf.pack(side=RIGHT, fill=Y)
 Grafik.pack(fill=BOTH, expand=True)
-
-
+ZB=Zeichenbrett(Grafik)
+ZB.reset()
+ZB.karo()
+ZB.coordinatesystem()
 
 #Aktualisiere fenster
 Fenster.mainloop()
