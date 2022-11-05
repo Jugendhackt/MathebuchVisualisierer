@@ -9,7 +9,13 @@ HoeheFenster=600
 def Knopfdruck():
     Grafik.create_rectangle(20, 20 ,BreiteCanvas-20, HoeheCanvas-40)
 
-
+class Funktion:
+    def __init__(self, term, farbe="black"):
+        self.farbe = farbe
+        self.term=term
+    def eval (self, x):
+        return eval(self.term, locals={"x":x})
+         
 #Initialisiere fenster/canvas/Knopf
 Fenster = Tk()
 Fenster.title("Mathebuchvisualisierer")
@@ -25,12 +31,15 @@ EingabeFrame.pack(side=BOTTOM, fill=X, expand=False)
 
 
 #Knopf und eingabe
-Grafik = Canvas(Fenster, width=BreiteCanvas, height=HoeheCanvas)
-Knopf = Button(Fenster, text="Zeichne!", command=Knopfdruck)
-eingabe = Entry(Fenster, width=60, font=("Arial",16))
-eingabe.place(x=25, y=560)
-Knopf.pack()
-Grafik.pack()
+Fenster.update()
+
+Grafik = Canvas(CanvasFrame, width=CanvasFrame.winfo_width(), height=CanvasFrame.winfo_height())
+
+Knopf = Button(EingabeFrame, text="Zeichne!", command=Knopfdruck)
+eingabe = Entry(EingabeFrame, font=("Arial",16))
+eingabe.pack(side=LEFT, fill=X, expand=True)
+Knopf.pack(side=RIGHT, fill=Y)
+Grafik.pack(fill=BOTH, expand=True)
 
 #Aktualisiere fenster
 Fenster.mainloop()
