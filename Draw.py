@@ -65,13 +65,13 @@ class Zeichenbrett:
         self.lock.acquire()
         xh=self.width/2
         yh=self.height/2
+
         self.draw.line([xh , 0, xh, self.height], fill="black", width=2)
         self.draw.line([0 , yh, self.width, yh], fill="black", width=2)
         self.draw.line([xh, 0, xh-10,self.scale], fill="black", width=2)
         self.draw.line([ xh, 0, xh+10, self.scale], fill="black", width=2)
-        self.draw.line([self.width , yh, self.width-10, yh+10], fill="black", width=2)
-        
-        self.draw.line([self.width , yh, self.width+self.scale, yh-10], fill="black", width=2)
+        self.draw.line([self.width , yh, self.width-10, yh+10], fill="black", width=2) 
+        self.draw.line([self.width , yh, self.width-10, yh-10], fill="black", width=2)
 
         bx=self.scale*2
         by=self.scale*2
@@ -86,10 +86,10 @@ class Zeichenbrett:
         x = 0
         n = 0
         while x<self.width:
-            self.draw.text((xh+x,yh+15),str(0+n))
-            self.draw.text((xh-x,yh+15),str(0-n))
-            self.draw.text((xh-20,yh+x),str(0-n))
-            self.draw.text((xh-20,yh-x),str(0+n))
+            self.draw.text((xh+x,yh+15),str(0+n), fill="black")
+            self.draw.text((xh-x,yh+15),str(0-n), fill="black")
+            self.draw.text((xh-20,yh+x),str(0-n), fill="black")
+            self.draw.text((xh-20,yh-x),str(0+n), fill="black")
             x = x+40
             n = n+2
         self.lock.release()
@@ -108,7 +108,7 @@ class Zeichenbrett:
         for i in range(1,len(sample)):
             coor1 = xh+sample[i-1]*self.scale, yh-f(sample[i-1])*self.scale
             coor2 = xh+sample[i]*self.scale, yh-f(sample[i])*self.scale
-            self.draw.line([coor1, coor2], fill=colour, width=2)
+            self.draw.line([coor1, coor2], fill=colour, width=3)
         self.lock.release()
         self.update()
 
