@@ -7,6 +7,7 @@ from Draw import *
 AktuelleFormeln = 0
 MaximumFormeln=9
 FarbenListe=["Black", "Blue", "Orange", "Green", "Red", "Purple", "Yellow", "Pink", "Brown"]
+FunktionListe = [None, None, None,None,None,None,None,None, None]
 BreiteCanvas=900
 HoeheCanvas=590  
 BreiteFenster=1000
@@ -21,7 +22,13 @@ def Knopfdruck():
         F=Funktion(Formel2, farbe=AktuellFarbe)
         ZB.drawFunction(F.eval, colour=AktuellFarbe, start=float(eingabeStart.get()), step=float(eingabeStep.get()), end=float(eingabeStop.get()))
       
-        FunktionFrame(OptionFrame, F)
+        Term=FunktionFrame(OptionFrame, F)
+        for i in range(9): 
+            if FunktionListe [i] is None:
+                FunktionListe [i] = Term
+                Term.index = i
+                break
+        
         AktuelleFormeln =+1
     else:
         messagebox.showerror(title="Fehler", message="Zu viele funktionen erstellt")
@@ -40,7 +47,7 @@ class FunktionFrame:
         self.Formel.pack(anchor=NW)
         self.EditButton = Button(self.FunktionKasten, text="Bearbeite", command=self.AendereFunktion)
         self.EditButton.pack(side=RIGHT)
-
+        self.index = 8
        
     def delete(self):
         AktuelleFormeln=+0
@@ -48,6 +55,16 @@ class FunktionFrame:
             self.FunktionKasten.pack_forget()
             self.FunktionKasten.destroy()
             AktuelleFormeln=AktuelleFormeln -1
+            FunktionListe[self.index]=None
+            ZB.reset()
+            ZB.karo()
+            ZB.coordinatesystem()
+            for i in FunktionListe:
+                if i is not None:
+                    ZB.drawFunction(i.Funktion.eval, colour=i.Funktion.farbe, start=float(eingabeStart.get()), step=float(eingabeStep.get()), end=float(eingabeStop.get()))
+
+            
+
     def AendereFunktion(self):
         self.AendereFenster= Tk() 
         self.Eingabe2 = Entry(self.AendereFenster)
@@ -55,12 +72,21 @@ class FunktionFrame:
         self.ButtonOk = Button(self.AendereFenster, text="Ok", command=self.destroy)
         self.ButtonOk.pack()
         self.AendereFenster.mainloop()
+
     def destroy(self):
-        self.Aenderung=self.Eingabe2.get()
-        str(self.Aenderung)
-        #Hier funktion einfügen
-        self.Formel.config(text=self.Aenderung)
+        self.Funktion.term=self.Eingabe2.get()
+        
+
+        ZB.reset()
+        ZB.karo()
+        ZB.coordinatesystem()
+        for i in FunktionListe:
+                if i is not None:
+                    ZB.drawFunction(i.Funktion.eval, colour=i.Funktion.farbe, start=float(eingabeStart.get()), step=float(eingabeStep.get()), end=float(eingabeStop.get()))
+
+        self.Formel.config(text=self.Eingabe2.get())
         self.AendereFenster.destroy()
+
 #Initialisiere fenster/canvas/Knopf
 Fenster = Tk()
 Fenster.title("Formelvisualisierer")
@@ -99,6 +125,19 @@ ZB=Zeichenbrett(Grafik)
 ZB.reset()
 ZB.karo()
 ZB.coordinatesystem()
+
+def resize(event):
+    ZB.width = event.width
+    ZB.height = event.height
+    ZB.reset()
+    ZB.karo()
+    ZB.coordinatesystem()
+    for i in FunktionListe:
+                if i is not None:
+                    ZB.drawFunction(i.Funktion.eval, colour=i.Funktion.farbe, start=float(eingabeStart.get()), step=float(eingabeStep.get()), end=float(eingabeStop.get()))
+
+Grafik.bind('<Configure>', resize)
+
 
 
 

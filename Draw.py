@@ -38,6 +38,8 @@ class Zeichenbrett:
     
     def reset(self):
         self.lock.acquire()
+        self.content=Image.new('RGB', (self.width,self.height))
+        self.draw = ImageDraw.Draw(self.content)
         self.draw.rectangle([0,0,self.width,self.height],fill="white")
         self.lock.release()
         self.update()
